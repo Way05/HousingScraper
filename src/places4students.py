@@ -39,15 +39,13 @@ if html:
         desc = listing.find("h3")
         content = listing.find_all("span")
         content = list(filter(lambda c: c.text != "NEW", content))
-        print(desc)
-        print(content)
         if desc and content:
             data["ID"].append(content[0].text)
             data["Description"].append(desc.text)
             data["Distance"].append(content[1].text)
-            data["Price"].append(content[2].text)
-            data["Rooms"].append(content[3].text)
-            data["Washrooms"].append(content[4].text)
+            data["Price"].append("WIP")
+            data["Rooms"].append(content[2].text)
+            data["Washrooms"].append(content[3].text)
 
     df = pd.DataFrame(
         data,
