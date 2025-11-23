@@ -8,7 +8,12 @@ import time
 
 url = "https://www.udstudentrentals.com/availableproperties"
 html = None
-data = {"Location": [], "Price": [], "Tenants": [], "Status": []}
+data = {
+    "Location": [],
+    "Price ($)": [],
+    "Tenants": [],
+    # "Status": []
+}
 
 
 def getData():
@@ -53,8 +58,8 @@ def getData():
             details = listings[i].find_all("td")
             for i in range(0, len(details) - 3, 4):
                 data["Location"].append(details[i].text)
-                data["Price"].append(details[i + 1].text)
+                data["Price ($)"].append(details[i + 1].text)
                 data["Tenants"].append(details[i + 2].text)
-                data["Status"].append(details[i + 3].text)
+                # data["Status"].append(details[i + 3].text)
 
     return data

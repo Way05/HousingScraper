@@ -14,7 +14,7 @@ data = {
     # "Distance": [],
     "Rooms": [],
     # "Washrooms": [],
-    "Price": [],
+    "Price ($)": [],
 }
 
 
@@ -31,7 +31,7 @@ def scrapePage(newSoup):
             # data["ID"].append(content[0].text)
             data["Description"].append(desc.text)
             # data["Distance"].append(content[1].text)
-            data["Price"].append(prices[count].text)
+            data["Price ($)"].append(prices[count].text)
             data["Rooms"].append(content[2].text)
             # data["Washrooms"].append(content[3].text)
             count += 1
