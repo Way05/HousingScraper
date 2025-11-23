@@ -49,15 +49,10 @@ driver.quit()
 
 if html:
     soup = BeautifulSoup(html, "html.parser")
-    headers = soup.find_all("th")
-    headers = [header is not None for header in headers]
     listings = soup.find_all("tr")
     for i in range(len(listings)):
         details = listings[i].find_all("td")
-        detailList = []
-        for detail in details:
-            detailList.append(detail.text)
-        for i in range(0, len(detailList) - 3, 4):
+        for i in range(0, len(details) - 3, 4):
             data["Location"].append(details[i].text)
             data["Price"].append(details[i + 1].text)
             data["Tenants"].append(details[i + 2].text)
