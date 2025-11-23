@@ -18,6 +18,16 @@ data = {
 }
 
 
+def getSchoolPage(name):
+    # get search bar
+    # type
+    # get results
+    # pick result
+    # update url
+    # scrape
+    pass
+
+
 def scrapePage(newSoup):
     listings = newSoup.find_all("div", class_="group")
     listings = filter(None, listings)

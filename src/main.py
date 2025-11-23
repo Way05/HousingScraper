@@ -3,6 +3,7 @@ from udstudentrentals import getData as udr
 import pandas as pd
 
 print("Welcome to housingScraper!")
+school = input("What school? (please time exact name): ")
 print("Which site would you like to search?")
 print("1. UD Student Rentals")
 print("2. Places4Students (UD only for now)")
@@ -38,4 +39,7 @@ match input:
     case "4":
         print("Exiting...")
 
-print(df)
+if df.empty:
+    print("No results found.")
+else:
+    print(df)
