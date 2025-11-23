@@ -15,14 +15,27 @@ data = None
 match input:
     case "1":
         data = udr()
+        df = pd.DataFrame(data)
+        df["Price ($)"] = (
+            df["Price ($)"]
+            .map(lambda x: x.replace(",", "").rstrip("+").lstrip("$").strip())
+            .astype(float)
+        )
+        df.sort_values(by=["Price ($)"], inplace=True)
         pass
     case "2":
         data = ps4()
+        df = pd.DataFrame(data)
+        df["Price ($)"] = (
+            df["Price ($)"]
+            .map(lambda x: x.replace(",", "").rstrip("+").lstrip("$").strip())
+            .astype(float)
+        )
+        df.sort_values(by=["Price ($)"], inplace=True)
         pass
     case "3":
         pass
     case "4":
         print("Exiting...")
 
-df = pd.DataFrame(data)
 print(df)
