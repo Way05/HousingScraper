@@ -22,7 +22,7 @@ def getData():
 
         time.sleep(1)
 
-        iframe = WebDriverWait(driver, 10).until(
+        WebDriverWait(driver, 10).until(
             EC.frame_to_be_available_and_switch_to_it((By.CLASS_NAME, "nKphmK"))
         )
         # print("iframe found")
@@ -31,7 +31,7 @@ def getData():
 
         time.sleep(1)
 
-        dataTable = WebDriverWait(driver, 10).until(
+        WebDriverWait(driver, 10).until(
             # EC.visibility_of_element_located((By.ID, "theTable"))
             # EC.visibility_of_element_located((By.XPATH, "//*[@id='theTable']"))
             EC.presence_of_element_located((By.XPATH, "//*[@id='theTable']//tbody"))
