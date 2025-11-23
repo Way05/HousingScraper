@@ -6,7 +6,9 @@ from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup
 import time
 
+defaultUrl = "https://www.places4students.com/"
 url = "https://www.places4students.com/schools/1255/listings/properties?pagination=1"
+driver = webdriver.Chrome()
 html = None
 data = {
     # "ID": [],
@@ -16,16 +18,6 @@ data = {
     # "Washrooms": [],
     "Price ($)": [],
 }
-
-
-def getSchoolPage(name):
-    # get search bar
-    # type
-    # get results
-    # pick result
-    # update url
-    # scrape
-    pass
 
 
 def scrapePage(newSoup):
@@ -48,8 +40,6 @@ def scrapePage(newSoup):
 
 
 def getData():
-    driver = webdriver.Chrome()
-    driver.get(url)
     html = driver.page_source
     soup = BeautifulSoup(html, "html.parser")
     pagination = soup.find_all("ul", class_="flex flex-row items-center gap-1")
@@ -74,3 +64,46 @@ def getData():
     driver.quit()
 
     return data
+
+
+def getSchoolPage(name):
+    driver.get(defaultUrl)
+    searchBar = driver.find_element(By.TAG_NAME, "input")
+    searchBar.send_keys(name)
+    WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located(
+            (
+                By.XPATH,
+                "//*[@class='p-4 pb-2 border-b border-gray-200']",
+            )
+        )
+    )
+    time.sleep(1)
+    searchResults = driver.find_element(By.TAG_NAME, "ul")
+    schools = searchResults.find_elements(By.TAG_NAME, "li")
+    schools = schools[0::1]
+    print("Search results:")
+    for i in range(len(schools)):
+        print(f"({i + 1}) {schools[i].text}")
+    selection = input("Select school: ")
+    print(f"Selected: {schools[int(selection) - 1].text}")
+    schools[int(selection) - 1].click()
+    time.sleep(1)
+    # get past cookies
+    cookies = driver.find_element(
+        By.XPATH,
+        "//*[@class='text-white px-6 py-2 rounded-lg text-sm font-semibold shadow hover:opacity-90 transition-opacity']",
+    )
+    time.sleep(1)
+    cookies.click()
+    # click to listings
+    listings = driver.find_element(
+        By.XPATH, "//button[contains(text(), 'View Details')]"
+    )
+    listings.click()
+    time.sleep(2)
+
+    getData()
+
+
+getSchoolPage("e")
