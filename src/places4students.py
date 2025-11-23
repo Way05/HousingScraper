@@ -23,9 +23,12 @@ data = {
     "Price": [],
 }
 
+
 def scrapePage(newSoup):
     listings = newSoup.find_all("div", class_="group")
     listings = filter(None, listings)
+    prices = soup.find_all("div", class_="text-lg font-bold")
+    count = 0
     for listing in listings:
         desc = listing.find("h3")
         content = listing.find_all("span")
@@ -34,9 +37,11 @@ def scrapePage(newSoup):
             data["ID"].append(content[0].text)
             data["Description"].append(desc.text)
             data["Distance"].append(content[1].text)
-            data["Price"].append("WIP")
+            data["Price"].append(prices[count].text)
             data["Rooms"].append(content[2].text)
             data["Washrooms"].append(content[3].text)
+            count += 1
+
 
 html = driver.page_source
 soup = BeautifulSoup(html, "html.parser")
