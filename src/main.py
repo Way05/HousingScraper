@@ -1,4 +1,4 @@
-from places4students import getSchoolPage as ps4
+from places4students import getSchoolPage as p4s
 from udstudentrentals import getData as udr
 import pandas as pd
 
@@ -30,7 +30,7 @@ match input:
         formatPrice(df)
         pass
     case "2":
-        data = ps4()
+        data = p4s()
         df = pd.DataFrame(data)
         formatPrice(df)
         pass
