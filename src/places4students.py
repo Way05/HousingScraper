@@ -6,10 +6,9 @@ from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup
 import time
 
-defaultUrl = "https://www.places4students.com/"
-url = "https://www.places4students.com/schools/1255/listings/properties?pagination=1"
-driver = webdriver.Chrome()
-html = None
+url = "https://www.places4students.com/"
+options = webdriver.ChromeOptions()
+# options.add_argument("--headless")
 data = {
     # "ID": [],
     "Description": [],
@@ -39,26 +38,29 @@ def scrapePage(newSoup):
             count += 1
 
 
-def getData():
+def getData(driver):
     html = driver.page_source
     soup = BeautifulSoup(html, "html.parser")
     pagination = soup.find_all("ul", class_="flex flex-row items-center gap-1")
-    pagination = pagination[0].find_all("li")[1:-1]
-    for i in range(1, len(pagination) + 1):
-        try:
-            WebDriverWait(driver, 10).until(
-                EC.presence_of_element_located((By.LINK_TEXT, str(i)))
-            )
-            driver.find_element(By.LINK_TEXT, str(i)).click()
+    if not pagination:
+        scrapePage(soup)
+    else:
+        pagination = pagination[0].find_all("li")[1:-1]
+        for i in range(1, len(pagination) + 1):
+            try:
+                WebDriverWait(driver, 10).until(
+                    EC.presence_of_element_located((By.LINK_TEXT, str(i)))
+                )
+                driver.find_element(By.LINK_TEXT, str(i)).click()
 
-            time.sleep(3)
+                time.sleep(3)
 
-            html = driver.page_source
-            soup = BeautifulSoup(html, "html.parser")
-            scrapePage(soup)
-        except NoSuchElementException:
-            print("End of pages.")
-            break
+                html = driver.page_source
+                soup = BeautifulSoup(html, "html.parser")
+                scrapePage(soup)
+            except NoSuchElementException:
+                print("End of pages.")
+                break
 
     driver.switch_to.default_content()
     driver.quit()
@@ -66,8 +68,10 @@ def getData():
     return data
 
 
-def getSchoolPage(name):
-    driver.get(defaultUrl)
+def getSchoolPage():
+    name = input("What school?: ")
+    driver = webdriver.Chrome(options=options)
+    driver.get(url)
     searchBar = driver.find_element(By.TAG_NAME, "input")
     searchBar.send_keys(name)
     WebDriverWait(driver, 10).until(
@@ -103,7 +107,4 @@ def getSchoolPage(name):
     listings.click()
     time.sleep(2)
 
-    getData()
-
-
-getSchoolPage("e")
+    return getData(driver)

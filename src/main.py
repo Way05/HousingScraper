@@ -1,9 +1,8 @@
-from places4students import getData as ps4
+from places4students import getSchoolPage as ps4
 from udstudentrentals import getData as udr
 import pandas as pd
 
 print("Welcome to housingScraper!")
-school = input("What school? (please time exact name): ")
 print("Which site would you like to search?")
 print("1. UD Student Rentals")
 print("2. Places4Students (UD only for now)")
@@ -12,6 +11,7 @@ print("4. Exit")
 input = input("Enter a number: ")
 
 data = None
+df = None
 
 
 def formatPrice(df):
@@ -39,7 +39,7 @@ match input:
     case "4":
         print("Exiting...")
 
-if df.empty:
+if df is None:
     print("No results found.")
 else:
     print(df)

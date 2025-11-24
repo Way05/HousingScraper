@@ -7,7 +7,8 @@ from bs4 import BeautifulSoup
 import time
 
 url = "https://www.udstudentrentals.com/availableproperties"
-html = None
+options = webdriver.ChromeOptions()
+# options.add_argument("--headless")
 data = {
     "Location": [],
     "Price ($)": [],
@@ -17,8 +18,9 @@ data = {
 
 
 def getData():
-    driver = webdriver.Chrome()
+    driver = webdriver.Chrome(options=options)
     driver.get(url)
+    html = None
     try:
         time.sleep(1)
         scroll_amount = 1000  # Adjust this value based on your page's layout
