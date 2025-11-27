@@ -11,14 +11,15 @@ os.system("cls")
 
 def formatData(*raw_data):
     for data in raw_data:
-        df = pd.DataFrame(data)
-        df["Price ($)"] = (
-            df["Price ($)"]
-            .map(lambda x: x.replace(",", "").rstrip("+").lstrip("$").strip())
-            .astype(float)
-        )
-        df.sort_values(by=["Price ($)"], inplace=True, ignore_index=True)
-        dfs.append(df)
+        if data:
+            df = pd.DataFrame(data)
+            df["Price ($)"] = (
+                df["Price ($)"]
+                .map(lambda x: x.replace(",", "").rstrip("+").lstrip("$").strip())
+                .astype(float)
+            )
+            df.sort_values(by=["Price ($)"], inplace=True, ignore_index=True)
+            dfs.append(df)
 
 
 def fetchData():
