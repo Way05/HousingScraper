@@ -14,14 +14,17 @@ data = {
     "Location": [],
     "Price ($)": [],
     "Tenants": [],
+    "Bedrooms": [],
+    "Bathrooms": [],
     # "Status": []
+    "Link": [],
 }
 
 
 def getData():
     driver = webdriver.Chrome(options=options)
     driver.get(url)
-    html = None
+    mainHTML = None
     try:
         time.sleep(1)
 
@@ -47,7 +50,35 @@ def getData():
         )
         # print("table found")
 
-        html = driver.page_source
+        mainHTML = driver.page_source
+
+        links = driver.find_elements(By.XPATH, "//a[@href='javascript:void(0)']")
+        for i in range(len(links)):
+            time.sleep(1)
+            links = driver.find_elements(By.XPATH, "//a[@href='javascript:void(0)']")
+            time.sleep(1)
+            links[i].click()
+            time.sleep(1)
+            data["Link"].append(driver.current_url)
+            html = driver.page_source
+            soup = BeautifulSoup(html, "html.parser")
+            h6 = soup.find_all("h6")
+            rooms = next((t for t in h6 if "Bedroom" in t.text), None)
+            brs = next((t for t in h6 if "Bathroom" in t.text), None)
+            if rooms and brs:
+                data["Bedrooms"].append(rooms.text)
+                data["Bathrooms"].append(brs.text)
+            else:
+                data["Bedrooms"].append("Check Site")
+                data["Bathrooms"].append("Check Site")
+            driver.back()
+            time.sleep(1)
+            scroll_amount = 1000
+            driver.execute_script(f"window.scrollBy(0, {scroll_amount});")
+            time.sleep(1)
+            WebDriverWait(driver, 10).until(
+                EC.frame_to_be_available_and_switch_to_it((By.CLASS_NAME, "nKphmK"))
+            )
 
     except TimeoutException:
         print("Failed to load in time.")
@@ -55,8 +86,8 @@ def getData():
     driver.switch_to.default_content()
     driver.quit()
 
-    if html:
-        soup = BeautifulSoup(html, "html.parser")
+    if mainHTML:
+        soup = BeautifulSoup(mainHTML, "html.parser")
         listings = soup.find_all("tr")
         for i in range(len(listings)):
             details = listings[i].find_all("td")
