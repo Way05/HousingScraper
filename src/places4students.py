@@ -15,7 +15,7 @@ data = {
     "Description": [],
     # "Distance": [],
     "Rooms": [],
-    # "Washrooms": [],
+    "Washrooms": [],
     "Price ($)": [],
 }
 
@@ -35,7 +35,7 @@ def scrapePage(newSoup):
             # data["Distance"].append(content[1].text)
             data["Price ($)"].append(prices[count].text)
             data["Rooms"].append(content[2].text)
-            # data["Washrooms"].append(content[3].text)
+            data["Washrooms"].append(content[3].text)
             count += 1
 
 
@@ -90,9 +90,9 @@ def getSchoolPage(name):
         schools = searchResults.find_elements(By.TAG_NAME, "li")
         print("Search results:")
         for i in range(len(schools)):
-            print(f"({i + 1}) {schools[i].text.replace("\n", " ")}")
+            print(f"({i + 1}) {schools[i].text.replace("\n", ", ")}")
         selection = input("Select school: ")
-        print(f"Selected: {schools[int(selection) - 1].text.replace("\n", " ")}")
+        print(f"Selected: {schools[int(selection) - 1].text.replace("\n", ", ")}")
         print("Scraping pages...")
         schools[int(selection) - 1].click()
         time.sleep(1)
