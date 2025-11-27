@@ -27,16 +27,19 @@ def fetchData():
     choice = input("Enter a number: ")
     match choice:
         case "1":
+            print("Fetching data...")
             data = udr()
             df = pd.DataFrame(data)
             formatPrice(df)
             dfs.append(df)
         case "2":
+            print("Fetching data...")
             data = p4s(name)
             df = pd.DataFrame(data)
             formatPrice(df)
             dfs.append(df)
         case "3":
+            print("Fetching data...")
             data1 = udr()
             df1 = pd.DataFrame(data1)
             data2 = p4s(name)
@@ -50,6 +53,7 @@ def fetchData():
 
 
 fetchData()
+print("Data fetched.")
 
 while True:
     cmd = input(
@@ -63,15 +67,18 @@ while True:
                 for df in dfs:
                     print(df)
         case "E":
+            print("Exporting...")
             count = 1
             for df in dfs:
                 df.to_csv(f"out_0{count}.csv", index=False)
                 count += 1
+            print("Export complete.")
         case "F":
             pass
         case "S":
             pass
         case "Q":
+            print("Exiting...")
             break
         case _:
             print("Unrecognized Command, try again.")
