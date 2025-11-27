@@ -2,7 +2,6 @@ from places4students import getSchoolPage as p4s
 from udstudentrentals import getData as udr
 import pandas as pd
 import os
-import platform
 
 run = True
 dfs = []
@@ -46,7 +45,7 @@ def fetchData():
             data1 = udr()
             data2 = p4s(name)
             formatData(data1, data2)
-        case "4":
+        case _:
             print("Exiting...")
             return False
     print("Data fetched.")
