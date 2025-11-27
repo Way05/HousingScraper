@@ -8,7 +8,8 @@ import time
 
 url = "https://www.places4students.com/"
 options = webdriver.ChromeOptions()
-# options.add_argument("--headless")
+options.add_argument("--headless")
+options.add_argument("--window-size=1920,1080")
 data = {
     # "ID": [],
     "Description": [],
@@ -71,6 +72,7 @@ def getData(driver):
 def getSchoolPage(name):
     driver = webdriver.Chrome(options=options)
     driver.get(url)
+    time.sleep(1)
     searchBar = driver.find_element(By.TAG_NAME, "input")
     searchBar.send_keys(name)
     WebDriverWait(driver, 10).until(
@@ -90,6 +92,7 @@ def getSchoolPage(name):
         print(f"({i + 1}) {schools[i].text}")
     selection = input("Select school: ")
     print(f"Selected: {schools[int(selection) - 1].text}")
+    print("Scraping pages...")
     schools[int(selection) - 1].click()
     time.sleep(1)
     # get past cookies
