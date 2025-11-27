@@ -1,24 +1,31 @@
 from places4students import getSchoolPage as p4s
 from udstudentrentals import getData as udr
 import pandas as pd
+import os
+import platform
 
-data = None
+run = True
 dfs = []
 
+os.system("cls")
 
-def formatPrice(df):
-    df["Price ($)"] = (
-        df["Price ($)"]
-        .map(lambda x: x.replace(",", "").rstrip("+").lstrip("$").strip())
-        .astype(float)
-    )
-    df.sort_values(by=["Price ($)"], inplace=True, ignore_index=True)
-    # df.reset_index(drop=True)
+
+def formatData(*raw_data):
+    for data in raw_data:
+        df = pd.DataFrame(data)
+        df["Price ($)"] = (
+            df["Price ($)"]
+            .map(lambda x: x.replace(",", "").rstrip("+").lstrip("$").strip())
+            .astype(float)
+        )
+        df.sort_values(by=["Price ($)"], inplace=True, ignore_index=True)
+        dfs.append(df)
 
 
 def fetchData():
     print("Welcome to housingScraper!")
-    name = input("What school?: ")
+    # name = input("What school?: ")
+    name = "ud"
     print("Which site would you like to search?")
     print("1. UD Student Rentals")
     print("2. Places4Students")
@@ -29,33 +36,26 @@ def fetchData():
         case "1":
             print("Fetching data...")
             data = udr()
-            df = pd.DataFrame(data)
-            formatPrice(df)
-            dfs.append(df)
+            formatData(data)
         case "2":
             print("Fetching data...")
             data = p4s(name)
-            df = pd.DataFrame(data)
-            formatPrice(df)
-            dfs.append(df)
+            formatData(data)
         case "3":
             print("Fetching data...")
             data1 = udr()
-            df1 = pd.DataFrame(data1)
             data2 = p4s(name)
-            df2 = pd.DataFrame(data2)
-            formatPrice(df1)
-            formatPrice(df2)
-            dfs.append(df1)
-            dfs.append(df2)
+            formatData(data1, data2)
         case "4":
             print("Exiting...")
+            return False
+    print("Data fetched.")
+    return True
 
 
-fetchData()
-print("Data fetched.")
+run = fetchData()
 
-while True:
+while True and run:
     cmd = input(
         "Enter CMD: (D) Display, (E) Export, (F) Filter, (S) Sort, (Q) Quit\n"
     ).upper()
