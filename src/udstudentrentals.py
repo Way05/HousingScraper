@@ -8,7 +8,8 @@ import time
 
 url = "https://www.udstudentrentals.com/availableproperties"
 options = webdriver.ChromeOptions()
-# options.add_argument("--headless")
+options.add_argument("--headless")
+options.add_argument("--window-size=1920,1080")
 data = {
     "Location": [],
     "Price ($)": [],
@@ -23,6 +24,7 @@ def getData():
     html = None
     try:
         time.sleep(1)
+
         scroll_amount = 1000  # Adjust this value based on your page's layout
         driver.execute_script(f"window.scrollBy(0, {scroll_amount});")
         # print(f"Scrolled iframe document down by {scroll_amount} pixels.")
