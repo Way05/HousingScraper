@@ -68,8 +68,7 @@ def getData(driver):
     return data
 
 
-def getSchoolPage():
-    name = input("What school?: ")
+def getSchoolPage(name):
     driver = webdriver.Chrome(options=options)
     driver.get(url)
     searchBar = driver.find_element(By.TAG_NAME, "input")
