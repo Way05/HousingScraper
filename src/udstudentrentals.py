@@ -82,9 +82,11 @@ def getData():
 
     except TimeoutException:
         print("Failed to load in time.")
-
-    driver.switch_to.default_content()
-    driver.quit()
+    except KeyboardInterrupt:
+        print("Exiting by CTRL-C")
+    finally:
+        driver.switch_to.default_content()
+        driver.quit()
 
     if mainHTML:
         soup = BeautifulSoup(mainHTML, "html.parser")

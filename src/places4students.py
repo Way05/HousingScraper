@@ -70,43 +70,49 @@ def getData(driver):
 
 
 def getSchoolPage(name):
-    driver = webdriver.Chrome(options=options)
-    driver.get(url)
-    time.sleep(1)
-    searchBar = driver.find_element(By.TAG_NAME, "input")
-    searchBar.send_keys(name)
-    WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located(
-            (
-                By.XPATH,
-                "//*[@class='p-4 pb-2 border-b border-gray-200']",
+    driver = None
+    try:
+        driver = webdriver.Chrome(options=options)
+        driver.get(url)
+        time.sleep(1)
+        searchBar = driver.find_element(By.TAG_NAME, "input")
+        searchBar.send_keys(name)
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located(
+                (
+                    By.XPATH,
+                    "//*[@class='p-4 pb-2 border-b border-gray-200']",
+                )
             )
         )
-    )
-    time.sleep(1)
-    searchResults = driver.find_element(By.TAG_NAME, "ul")
-    schools = searchResults.find_elements(By.TAG_NAME, "li")
-    schools = schools[0::1]
-    print("Search results:")
-    for i in range(len(schools)):
-        print(f"({i + 1}) {schools[i].text}")
-    selection = input("Select school: ")
-    print(f"Selected: {schools[int(selection) - 1].text}")
-    print("Scraping pages...")
-    schools[int(selection) - 1].click()
-    time.sleep(1)
-    # get past cookies
-    cookies = driver.find_element(
-        By.XPATH,
-        "//*[@class='text-white px-6 py-2 rounded-lg text-sm font-semibold shadow hover:opacity-90 transition-opacity']",
-    )
-    time.sleep(1)
-    cookies.click()
-    # click to listings
-    listings = driver.find_element(
-        By.XPATH, "//button[contains(text(), 'View Details')]"
-    )
-    listings.click()
-    time.sleep(2)
+        time.sleep(1)
+        searchResults = driver.find_element(By.TAG_NAME, "ul")
+        schools = searchResults.find_elements(By.TAG_NAME, "li")
+        print("Search results:")
+        for i in range(len(schools)):
+            print(f"({i + 1}) {schools[i].text.replace("\n", " ")}")
+        selection = input("Select school: ")
+        print(f"Selected: {schools[int(selection) - 1].text.replace("\n", " ")}")
+        print("Scraping pages...")
+        schools[int(selection) - 1].click()
+        time.sleep(1)
+        # get past cookies
+        cookies = driver.find_element(
+            By.XPATH,
+            "//*[@class='text-white px-6 py-2 rounded-lg text-sm font-semibold shadow hover:opacity-90 transition-opacity']",
+        )
+        time.sleep(1)
+        cookies.click()
+        # click to listings
+        listings = driver.find_element(
+            By.XPATH, "//button[contains(text(), 'View Details')]"
+        )
+        listings.click()
+        time.sleep(2)
 
-    return getData(driver)
+        return getData(driver)
+    except KeyboardInterrupt:
+        print("Exiting by CTRL-C")
+    finally:
+        if driver:
+            driver.quit()
