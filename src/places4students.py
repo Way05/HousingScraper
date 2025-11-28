@@ -17,6 +17,7 @@ data = {
     "Bedrooms": [],
     "Bathrooms": [],
     "Price ($)": [],
+    "Link": [],
 }
 
 
@@ -59,11 +60,33 @@ def getData(driver):
                 html = driver.page_source
                 soup = BeautifulSoup(html, "html.parser")
                 scrapePage(soup)
+
+                # scrape each listing page
+                # original_tab = driver.current_window_handle
+                links = driver.find_elements(
+                    By.XPATH, "//a[contains(text(), 'View Details')]"
+                )
+                for i in range(len(links)):
+                    data["Link"].append(links[i].get_attribute("href"))
+                    # code below opens tab of each listing
+                    # links = driver.find_elements(
+                    #     By.XPATH, "//a[contains(text(), 'View Details')]"
+                    # )
+                    # time.sleep(1)
+                    # links[i].click()
+                    # WebDriverWait(driver, 10).until(EC.number_of_windows_to_be(2))
+                    # for window_handle in driver.window_handles:
+                    #     if window_handle != original_tab:
+                    #         driver.switch_to.window(window_handle)
+                    #         break
+                    # time.sleep(1)
+                    # data["Link"] = driver.current_url
+                    # driver.close()
+                    # driver.switch_to.window(original_tab)
             except NoSuchElementException:
                 print("End of pages.")
                 break
 
-    driver.switch_to.default_content()
     driver.quit()
 
     return data
@@ -91,7 +114,8 @@ def getSchoolPage(name):
         print("Search results:")
         for i in range(len(schools)):
             print(f"({i + 1}) {schools[i].text.replace("\n", ", ")}")
-        selection = input("Select school: ")
+        # selection = input("Select school: ")
+        selection = 23
         print(f"Selected: {schools[int(selection) - 1].text.replace("\n", ", ")}")
         print("Scraping pages...")
         schools[int(selection) - 1].click()
