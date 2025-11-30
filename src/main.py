@@ -88,7 +88,21 @@ while True and merged_df is not None:
             ).upper()
             match filter_by:
                 case "P":
-                    pass
+                    try:
+                        lower = int(input("Lower range?: "))
+                        upper = int(input("Upper range?: "))
+                        if lower < upper:
+                            df_in_range_between = merged_df[
+                                merged_df["Price ($)"].between(lower, upper)
+                            ]
+                            if not df_in_range_between.empty:
+                                print(df_in_range_between)
+                            else:
+                                print("No results found.")
+                        else:
+                            print("Invalid range.")
+                    except ValueError:
+                        print("Not a number.")
                 case "R":
                     pass
                 case "B":
