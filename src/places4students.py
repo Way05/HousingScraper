@@ -63,6 +63,9 @@ def getData(driver):
 
                 # scrape each listing page
                 # original_tab = driver.current_window_handle
+                WebDriverWait(driver, 10).until(
+                    EC.presence_of_element_located((By.LINK_TEXT, "View Details"))
+                )
                 links = driver.find_elements(
                     By.XPATH, "//a[contains(text(), 'View Details')]"
                 )
