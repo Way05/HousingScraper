@@ -65,11 +65,6 @@ while True and merged_df is not None:
     ).upper()
     match cmd:
         case "D":
-            # if dfs is None:
-            #     print("No results found.")
-            # else:
-            #     for df in dfs:
-            #         print(df)
             print(merged_df)
         case "E":
             if len(dfs) > 1:
