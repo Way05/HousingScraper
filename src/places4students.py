@@ -121,12 +121,15 @@ def getSchoolPage(name):
         schools[int(selection) - 1].click()
         time.sleep(1)
         # get past cookies
-        cookies = driver.find_element(
-            By.XPATH,
-            "//*[@class='text-white px-6 py-2 rounded-lg text-sm font-semibold shadow hover:opacity-90 transition-opacity']",
-        )
-        time.sleep(1)
-        cookies.click()
+        try:
+            cookies = driver.find_element(
+                By.XPATH,
+                "//*[@class='text-white px-6 py-2 rounded-lg text-sm font-semibold shadow hover:opacity-90 transition-opacity']",
+            )
+            time.sleep(1)
+            cookies.click()
+        except NoSuchElementException:
+            pass
         # click to listings
         listings = driver.find_element(
             By.XPATH, "//button[contains(text(), 'View Details')]"
