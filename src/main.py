@@ -67,11 +67,34 @@ while True and run:
                 for df in dfs:
                     print(df)
         case "E":
-            print("Exporting...")
-            count = 1
-            for df in dfs:
-                df.to_csv(f"out_0{count}.csv", index=False)
-                count += 1
+            if len(dfs) > 1:
+                ask = input("(S) Separate or (T) together?: ").upper()
+                print("Exporting...")
+                if ask == "S":
+                    count = 1
+                    for df in dfs:
+                        df.to_csv(f"out_0{count}.csv", index=False)
+                        count += 1
+                elif ask == "T":
+                    # merged_df = pd.merge(
+                    #     dfs[0],
+                    #     dfs[1],
+                    #     on=[
+                    #         "Description",
+                    #         "Price ($)",
+                    #         "Bedrooms",
+                    #         "Bathrooms",
+                    #         "Link",
+                    #     ],
+                    # )
+                    # merged_df.to_csv("merged_out.csv", index=False)
+                    merged_df = pd.concat([dfs[0], dfs[1]], ignore_index=True)
+                    merged_df = merged_df.dropna()
+                    merged_df.to_csv("merged_out.csv", index=False)
+                else:
+                    print("Invalid.")
+            else:
+                df.to_csv("out_01.csv", index=False)
             print("Export complete.")
         case "F":
             pass
