@@ -36,7 +36,11 @@ def scrapePage(newSoup):
             # data["Distance"].append(content[1].text)
             data["Price ($)"].append(prices[count].text)
             data["Bedrooms"].append(content[2].text)
-            data["Bathrooms"].append(content[3].text)
+            data["Bathrooms"].append(
+                content[3].text
+                if "washroom" in content[3].text.lower()
+                else "Check Site"
+            )
             count += 1
 
 
