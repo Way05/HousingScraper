@@ -112,7 +112,7 @@ while True and merged_df is not None:
         case "S":
             sort_by = input(
                 "What do you want to sort? (P) Price, (R) Rooms, (B) Bathrooms: "
-            )
+            ).upper()
             match sort_by:
                 case "P":
                     order = input("(A) Ascending // (D) Descending: ").upper()
