@@ -13,7 +13,7 @@ options.add_argument("--window-size=1920,1080")
 data = {
     "Description": [],
     "Price ($)": [],
-    "Tenants": [],
+    # "Tenants": [],
     "Bedrooms": [],
     "Bathrooms": [],
     # "Status": []
@@ -96,7 +96,7 @@ def getData():
             for i in range(0, len(details) - 3, 4):
                 data["Description"].append(details[i].text)
                 data["Price ($)"].append(details[i + 1].text)
-                data["Tenants"].append(details[i + 2].text)
+                # data["Tenants"].append(details[i + 2].text)
                 # data["Status"].append(details[i + 3].text)
 
     return data
